@@ -11,3 +11,7 @@
 For example:
 1. I use the Box-Muller Transformation to make random guassian distribution from uniform noise
 2. I use self-implemented filter in some time.
+
+To Do:
+- [ ] Write a blog about my assignment.(including skills and methods) in leafy-lee.github.io
+- [ ] Implementing some functions.(including ssim et. al.)
