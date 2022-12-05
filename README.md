@@ -13,5 +13,5 @@ For example:
 2. I use self-implemented filter in some time.
 
 To Do:
-- [ ] Write a blog about my assignment.(including skills and methods) in leafy-lee.github.io
+- [ ] Write a blog about my assignment.(including skills and methods) in [leafy-lee.github.io](https://leafy-lee.github.io/)
 - [ ] Implementing some functions.(including ssim et. al.)
