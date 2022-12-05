@@ -11,42 +11,43 @@ from skimage.metrics import structural_similarity, peak_signal_noise_ratio, mean
 import cv2
 
 
+# Just borrow it from skimage
+# will implement soon(for assignment request)
 def compare(img1, img2):
     psnr = peak_signal_noise_ratio(img1, img2)
-    ssim = structural_similarity(img1, img2, multichannel=True)  # 对于多通道图像(RGB、HSV等)关键词multichannel要设置为True
+    ssim = structural_similarity(img1, img2, multichannel=True)
     mse = mean_squared_error(img1, img2)
     # print('PSNR：{}，SSIM：{}，MSE：{}'.format(psnr, ssim, mse))
     return psnr, ssim, mse
 
 
-for i in range(1, 5):
-    globals()[f"input_image{i}"] = cv2.imread(f'./result/input_image_{i}.png')
-
-# Recording gaussian noise images
-for i in range(1, 5):
-    for types in ["channel", "full"]:
-        globals()[f"gaussian_img_{types}_{i}"] = cv2.imread(f'./result/gaussian_img_{types}_{i}.png')
-
-# recording saltpepper noise images
-for i in range(1, 5):
-    globals()[f"sp_img_full_{i}"] = cv2.imread(f'./result/sp_img_full_{i}.png',
-                                               )
-for i in range(1, 5):
-    globals()[f"low_sp_img_full_{i}"] = cv2.imread(f'./result/low_sp_img_full_{i}.png')
-
-for i in range(1, 5):
-    for f_type, noise in product(["mean", "median", "median_adaptive"], ["gaussian", "sp", "low_sp"]):
-        # for noise in ["gaussian", "sp", "low_sp"]:
-        for types in ["channel", "full"]:
-            if "sp" in noise:
-                types = "full"
-            for pad in ["_reflect", ""]:
-                print(f"Reading images in ./result/{f_type}_{noise}_{types}{pad}_{i}.png")
-                globals()[f"{f_type}_{noise}_{types}{pad}_{i}"] = cv2.imread(
-                    f'./result/{f_type}_{noise}_{types}{pad}_{i}.png')
-
-
 if __name__ == "__main__":
+    for i in range(1, 5):
+        globals()[f"input_image{i}"] = cv2.imread(f'./result/input_image_{i}.png')
+
+    # Recording gaussian noise images
+    for i in range(1, 5):
+        for types in ["channel", "full"]:
+            globals()[f"gaussian_img_{types}_{i}"] = cv2.imread(f'./result/gaussian_img_{types}_{i}.png')
+
+    # recording saltpepper noise images
+    for i in range(1, 5):
+        globals()[f"sp_img_full_{i}"] = cv2.imread(f'./result/sp_img_full_{i}.png',
+                                                   )
+    for i in range(1, 5):
+        globals()[f"low_sp_img_full_{i}"] = cv2.imread(f'./result/low_sp_img_full_{i}.png')
+
+    for i in range(1, 5):
+        for f_type, noise in product(["mean", "median", "median_adaptive"], ["gaussian", "sp", "low_sp"]):
+            # for noise in ["gaussian", "sp", "low_sp"]:
+            for types in ["channel", "full"]:
+                if "sp" in noise:
+                    types = "full"
+                for pad in ["_reflect", ""]:
+                    print(f"Reading images in ./result/{f_type}_{noise}_{types}{pad}_{i}.png")
+                    globals()[f"{f_type}_{noise}_{types}{pad}_{i}"] = cv2.imread(
+                        f'./result/{f_type}_{noise}_{types}{pad}_{i}.png')
+
     for f_type, noise in product(["mean", "median", "median_adaptive", "no_filter"], ["gaussian", "sp", "low_sp"]):
         for types in ["channel", "full"]:
             if "sp" in noise and types == "channel":
