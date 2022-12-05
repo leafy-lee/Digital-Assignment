@@ -33,7 +33,7 @@ def generate_gaussian_noise(input_img: np.ndarray, mean: float, var: float) -> T
 def generate_saltpepper_noise(prob_1: float, prob_2: float, input_img: np.ndarray) -> np.ndarray:
     """
     :param:     prob_1:         prob_1 of saltpepper noise.
-    :param:     prob_2:         prob_1 of saltpepper noise.
+    :param:     prob_2:         prob_2 of saltpepper noise.
     :param:     input_img:      Input image.
     :return:    output_image:   Output image with saltpepper noise added.
     """
