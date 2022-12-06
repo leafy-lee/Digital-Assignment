@@ -7,16 +7,29 @@
 # last_modified: 2022-12-5
 
 from itertools import product
-from skimage.metrics import structural_similarity, peak_signal_noise_ratio, mean_squared_error
+import math
+import numpy as np
+from skimage.metrics import structural_similarity
 import cv2
+
+
+def mean_squared_error(img1: np.ndarray, img2: np.ndarray) -> float:
+    mse = np.mean((img1 / 1.0 - img2 / 1.0) ** 2)
+    return float(mse)
+
+
+def peak_signal_noise_ratio(mse: float) -> float:
+    if mse < 1.0e-10:
+        return 100
+    return 10 * math.log10(255.0 ** 2 / mse)
 
 
 # Just borrow it from skimage
 # will implement soon(for assignment request)
 def compare(img1, img2):
-    psnr = peak_signal_noise_ratio(img1, img2)
-    ssim = structural_similarity(img1, img2, multichannel=True)
     mse = mean_squared_error(img1, img2)
+    psnr = peak_signal_noise_ratio(mse)
+    ssim = structural_similarity(img1, img2, multichannel=True)
     # print('PSNR：{}，SSIM：{}，MSE：{}'.format(psnr, ssim, mse))
     return psnr, ssim, mse
 
