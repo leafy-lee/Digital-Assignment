@@ -42,8 +42,8 @@ def get_adaptive_median(noised_image: np.ndarray, x: int, y: int, h: int, w: int
         return noised_image[x][y][c] if min_val < noised_image[x][y][c] < max_val else median
 
 
-def get_mean(noised_image: np.ndarray, x_min: int, x_max: int, y_min: int, y_max: int, c: int) -> float:
-    return float(np.mean(noised_image[x_min:x_max + 1, y_min:y_max + 1, c]))
+def get_mean(noised_image: np.ndarray, x_min: int, x_max: int, y_min: int, y_max: int) -> np.ndarray:
+    return np.mean(noised_image[x_min:x_max + 1, y_min:y_max + 1], axis=(0, 1))
 
 
 class SpatialFilter:
@@ -166,8 +166,7 @@ class SpatialFilter:
             self._preprocess_args(noised_image, kernel_size, padding_func, padding_type)
         for h in range(depth, h_img + depth):
             for w in range(depth, w_img + depth):
-                for c in range(c_img):
-                    output_img[h, w, c] = get_mean(padded_image, h - depth, h + depth, w - depth, w + depth, c)
+                output_img[h, w, :] = get_mean(padded_image, h - depth, h + depth, w - depth, w + depth)
         output_img = output_img[depth:h_img + depth, depth:w_img + depth]
         return np.uint8(output_img)
 

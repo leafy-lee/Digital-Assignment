@@ -22,7 +22,7 @@ def generate_gaussian_noise(input_img: np.ndarray, mean: float, var: float) -> T
     :param:     input_img:      Input image.
     :param:     mean:           Mean of gaussian noise.
     :param:     var:            Variance of gaussian noise.
-    :return:    output_image:   Output image with gaussian noise added.
+    :return:    output_image:   Output image with gaussian noise added. output_img, output_img_channel_wise
     """
     inner_gaussian_noise_generator = GaussianNoiseGenerator()
     output_img = inner_gaussian_noise_generator.add_all_channel_noise(input_img, mean, var)
@@ -46,7 +46,7 @@ def mean_filter(noised_img: np.ndarray, kernel_size: int = None) -> Tuple[np.nda
     """
     :param:     input_img:      Input image.
     :param:     kernel_size:    kernel size of filter.
-    :return:    output_image:   Output filtered image.
+    :return:    output_image:   Output filtered image. output_img_zero, output_img_reflect
     """
     sp_filter = SpatialFilter(noised_img)
     output_img_zero = sp_filter.mean_filter(noised_img, kernel_size=kernel_size, padding_type="zero")
@@ -58,7 +58,7 @@ def median_filter(noised_img: np.ndarray, kernel_size: int = None) -> Tuple[np.n
     """
     :param:     input_img:      Input image.
     :param:     kernel_size:    kernel size of filter.
-    :return:    output_image:   Output filtered image.
+    :return:    output_image:   Output filtered image. output_img_zero, output_img_reflect
     """
     sp_filter = SpatialFilter(noised_img)
     output_img_zero = sp_filter.median_filter(noised_img, kernel_size=kernel_size, padding_type="zero")
@@ -72,7 +72,7 @@ def median_adaptive_filter(noised_img: np.ndarray, kernel_size: int = None,
     :param:     input_img:      Input image.
     :param:     kernel_size:    kernel size of filter.
     :param:     max_size:       Max size of adaptive filter.
-    :return:    output_image:   Output filtered image.
+    :return:    output_image:   Output filtered image. output_img_zero, output_img_reflect
     """
     sp_filter = SpatialFilter(noised_img)
     output_img_zero = sp_filter.adaptive_median_filter(noised_img, kernel_size=kernel_size,
@@ -119,8 +119,8 @@ def main(test_dir: str = "./test_image"):
         for f_type, noise in product(["mean", "median", "median_adaptive"], ["gaussian", "sp", "low_sp"]):
             # for noise in ["gaussian", "sp", "low_sp"]:
             for types in ["channel", "full"]:
-                if "sp" in noise:
-                    types = "full"
+                if "sp" in noise and types == "channel":
+                    continue
                 print(f"Generating images {f_type}_{noise}_{types}_{i}")
                 if f_type == "median_adaptive":
                     locals()[f"{f_type}_{noise}_{types}_{i}"], locals()[f"{f_type}_{noise}_{types}_reflect_{i}"] = \
